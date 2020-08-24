@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>station-finder :: dashboard</title>
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+          crossorigin="anonymous" />
+    <!-- Customized CSS -->
+    <link type="text/css"
+          rel="stylesheet"
+          href="css/info.css" />
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="basic-panel panel panel-default">
+                    <div class="text-center"><img th:src="${session.USER_CONFIG.avatarUrl}"></div>
+                    <div class="panel-heading">
+                        <h3 class="panel-title">GLOBAL SYSTEM INFO PAGE :: Result from GitHub</h3>
+                    </div>
+                    <div class="panel-body table-responsive">
+                        <table class="table table-striped">
+                            <tr>
+                                <td>loginId:</td>
+                                <td><span th:text="${session.USER_CONFIG.loginId}" style="font-family:arial;font-size:16px;color:blue;"></span></td>
+                            </tr>
+                            <tr>
+                                <td>avatarUrl:</td>
+                                <td><span th:text="${session.USER_CONFIG.avatarUrl}" style="font-family:arial;font-size:16px;color:blue;"></span></td>
+                            </tr>
+                            <tr>
+                                <td>userName:</td>
+                                <td><span th:text="${session.USER_CONFIG.userName}" style="font-family:arial;font-size:16px;color:blue;"></span></td>
+                            </tr>
+                            <tr>
+                                <td>userEmail:</td>
+                                <td><span th:text="${session.USER_CONFIG.userEmail}" style="font-family:arial;font-size:16px;color:blue;"></span></td>
+                            </tr>
+                            <tr>
+                                <td>accessToken:</td>
+                                <td><span th:text="${session.USER_CONFIG.accessToken}" style="font-family:arial;font-size:16px;color:blue;"></span></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-2.2.2.js"
+        integrity="sha256-4/zUCqiq0kqxhZIyp4G0Gk+AOtCJsY1TA00k5ClsZYE="
+        crossorigin="anonymous">
+</script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+        integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+        crossorigin="anonymous">
+</script>
+</html>
