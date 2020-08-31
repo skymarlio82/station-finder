@@ -12,6 +12,8 @@ targetCompatibility = 11
 def jjwtVersion = '0.10.6'
 def swaggerVersion = '2.7.0'
 def fastjsonVersion = '1.2.49'
+def jasyptVersion = '2.1.1'
+def junitVersion = '4.12'
 
 configurations {
     developmentOnly
@@ -54,6 +56,9 @@ dependencies {
     implementation "io.springfox:springfox-swagger2:${swaggerVersion}"
     implementation "io.springfox:springfox-swagger-ui:${swaggerVersion}"
 
+    implementation "com.github.ulisesbocchio:jasypt-spring-boot-starter:${jasyptVersion}"
+
+    implementation "junit:junit:${junitVersion}"
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }

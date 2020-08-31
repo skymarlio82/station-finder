@@ -26,7 +26,7 @@ spring:
 jwt:
   header: Authorization
   # This token must be encoded using Base64 with mininum 88 Bits (you can type `echo 'secret-key'|base64` on your command line)
-  base64-secret: ZmQ0ZGI5NjQ0MDQwY2I4MjMxY2Y3ZmI3MjdhN2ZmMjNhODViOTg1ZGE0NTBjMGM4NDA5NzYxMjdjOWMwYWRmZTBlZjlhNGY3ZTg4Y2U3YTE1ODVkZDU5Y2Y3OGYwZWE1NzUzNWQ2YjFjZDc0NGMxZWU2MmQ3MjY1NzJmNTE0MzI=
+  base64-secret: ENC(WOky4RA4GEoCjrgGVh3dMic9/ED8QutLcatR0bMQgO3nc17+TeRP2z0TJIGAZ3A1z1STAMUSApGF5CMJPu2JIcJPX/2fdHjFu1l+bCLCtIu9rttHnMS9VM3OEccWVlq1RYgkDYnVrWMVPMDnKZp1GEmnVZuDL1y+rOMJ1/uc7OYJTk4cBRjGnXkj42PUjqSwLHfNlfBAzNy4gwSO2PKlVJJqDW0q8n/144KoTsmQUkzwqXsY9xQN/w==)
   # token is valid 24 hours
   token-validity-in-seconds: 86400
   # valid 30 hours
@@ -39,11 +39,11 @@ jwt:
 github:
   oauth2:
     client-id: 7e93a0c92201f9166685
-    client-secret: ed5b6147f00ec39109dcfaf5d34ef431f4fb53dc
+    client-secret: ENC(FSNKrnqXSCaVEyEexXdNjN4KlUw9IyN5wvbEnKuVA580rHmu3tyTMjMWrl5K1emMfca/CqrOCGs=)
     callback-url: http://localhost:8080/station-finder/authorization/callback
     token-get-url: https://github.com/login/oauth/access_token
     user-info-url: https://api.github.com/user
 
 baidu:
   map-url: http://api.map.baidu.com/place/v2/search
-  map-ak: YnGAe9P3U503u5S0SZhAGTjwCclv5xx8
+  map-ak: ENC(6WWA4LR34kphrqLjDSuKtNR5wIxPLdlTFrybvRWqiaz3nvG5ozo79kY0J61/7oXT)

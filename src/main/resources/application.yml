@@ -27,6 +27,10 @@ spring:
       # 允许出现单引号
       allow_single_quotes: true
 
+#jasypt:
+#  encryptor:
+#    password: EbfYkitulv73I2p0mXI50JMXoaxZTKJ7
+
 logging:
   level:
     root: INFO
