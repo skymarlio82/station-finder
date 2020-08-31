@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class JwtToken {
-    @JsonProperty("id_token")
+    @JsonProperty("token")
     private String idToken;
 
     @Override
     public String toString() {
         return "JwtToken#{" +
-            ",idToken=" + idToken +
+            "idToken=" + idToken +
             "}";
     }
 }

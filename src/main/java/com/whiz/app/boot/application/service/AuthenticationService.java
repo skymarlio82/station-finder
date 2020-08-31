@@ -62,7 +62,8 @@ public class AuthenticationService {
         log.debug("accessTokenDto = {}", accessTokenDto);
         Assert.notNull(accessTokenDto, "AccessToken from Github deserialized failed!");
         headers.set("Authorization", "token " + accessTokenDto.getAccessToken());
-        String userInfoUrl = githubOauth2Properties.getUserInfoUrl() + "?access_token=" + accessTokenDto.getAccessToken();
+        String userInfoUrl = githubOauth2Properties.getUserInfoUrl() +
+            "?access_token=" + accessTokenDto.getAccessToken();
         log.debug("userInfoUrl = {}", userInfoUrl);
         ResponseEntity<GithubUserInfo> resUserInfo = restTemplate.getForEntity(userInfoUrl, GithubUserInfo.class);
         log.debug("resUserInfo = {}", resUserInfo);
@@ -86,7 +87,8 @@ public class AuthenticationService {
         userInfo.setAccessToken(accessTokenDto.getAccessToken());
         HttpSession session = request.getSession();
         session.setAttribute("USER_CONFIG", userInfo);
-        response.setHeader("Location", request.getContextPath() + "/info?jwt=" + jwt);
+//        response.setHeader("Location", request.getContextPath() + "/info?jwt=" + jwt);
+        response.setHeader("Location", "http://localhost:8090/#/oauth2Token?jwt=" + jwt);
         response.setStatus(302);
     }
 }

@@ -20,7 +20,6 @@ import org.springframework.web.filter.CorsFilter;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
     private final TokenProvider tokenProvider;
     private final CorsFilter corsFilter;
     private final JwtAuthenticationEntryPoint authenticationErrorHandler;
@@ -53,10 +52,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             // allow anonymous resource requests
             .antMatchers(
                 "/",
+                "/*.html",
                 "/favicon.ico",
                 "/**/*.css",
                 "/**/*.js",
+                "/**/*.gif",
                 "/**/*.png",
+                "/**/*.jpg",
+                "/**/*.map",
+                "/**/*.woff",
+                "/**/*.ttf",
                 "/h2-console/**",
                 "/swagger-ui.html",
                 "/v2/**",
@@ -91,14 +96,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
             .and()
                 .authorizeRequests()
-                .antMatchers("/login/native").permitAll()
-                .antMatchers("/authorization/callback").permitAll()
+                    .antMatchers("/login/native").permitAll()
+                    .antMatchers("/authorization/callback").permitAll()
+                    .antMatchers(HttpMethod.OPTIONS).permitAll()
 
-                .antMatchers("/api/user/me").hasAuthority("ROLE_USER")
-                .antMatchers("/api/user/all").hasAuthority("ROLE_ADMIN")
-                .antMatchers("/api/user/id/*").hasAuthority("ROLE_ADMIN")
-                .mvcMatchers(HttpMethod.POST, "/api/user/users").hasAuthority("ROLE_ADMIN")
-                .mvcMatchers(HttpMethod.PUT, "/api/user/users").hasAuthority("ROLE_ADMIN")
+                    .antMatchers("/api/user/me").hasAuthority("ROLE_USER")
+                    .antMatchers("/api/user/all").hasAuthority("ROLE_ADMIN")
+                    .antMatchers("/api/user/id/*").hasAuthority("ROLE_ADMIN")
+                    .mvcMatchers(HttpMethod.POST, "/api/user/users").hasAuthority("ROLE_ADMIN")
+                    .mvcMatchers(HttpMethod.PUT, "/api/user/users").hasAuthority("ROLE_ADMIN")
+                    .antMatchers("/api/test/**").hasAuthority("ROLE_ADMIN")
 
                 .anyRequest().authenticated()
 
