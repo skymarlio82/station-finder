@@ -4,6 +4,7 @@ import com.whiz.app.boot.application.service.UserService;
 import com.whiz.app.boot.domain.model.Authority;
 import com.whiz.app.boot.domain.model.UserProfile;
 import com.whiz.app.boot.domain.service.UserProfileService;
+import com.whiz.app.boot.infrastructure.event.UserUpdateEventPublisher;
 import com.whiz.app.boot.interfaces.dto.PagingParamRequest;
 import com.whiz.app.boot.interfaces.dto.UserDetail;
 import com.whiz.app.boot.interfaces.dto.form.NewUserForm;
@@ -36,12 +37,15 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
     private final UserProfileService userProfileService;
+    private final UserUpdateEventPublisher userUpdateEventPublisher;
 
     public UserController(
         UserService userService,
-        UserProfileService userProfileService) {
+        UserProfileService userProfileService,
+        UserUpdateEventPublisher userUpdateEventPublisher) {
         this.userService = userService;
         this.userProfileService = userProfileService;
+        this.userUpdateEventPublisher = userUpdateEventPublisher;
     }
 
     @ApiOperation(value = "Get Profile Details of Current User", nickname = "GetActualUser")
@@ -82,7 +86,7 @@ public class UserController {
         UserProfile user = userProfileService.getUserProfileById(userUpdatedForm.getId());
         if (null != user) {
             List<Authority> authorities = userProfileService.getAuthorityListByNames(userUpdatedForm.getAuthorities());
-            userProfileService.saveNewUser(user.sync(userUpdatedForm, authorities));
+            userUpdateEventPublisher.doPublishEvent(user.sync(userUpdatedForm, authorities));
             return ResponseEntity.ok(SimpleResponseData.success());
         }
         return ResponseEntity.ok(SimpleResponseData.failure(ResponseDataType.BAD_REQUEST, "User not existed"));
