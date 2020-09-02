@@ -19,11 +19,11 @@ public class NewUserForm {
     private String username;
 
     @NotNull
-    @Size(min = 6, max = 30)
+    @Size(min = 3, max = 30)
     private String firstname;
 
     @NotNull
-    @Size(min = 6, max = 30)
+    @Size(min = 3, max = 30)
     private String lastname;
 
     @NotNull
