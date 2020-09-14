@@ -1,7 +1,7 @@
 package com.whiz.app.boot.application;
 
-import com.whiz.app.boot.interfaces.dto.response.ResponseDataType;
-import com.whiz.app.boot.interfaces.dto.response.SimpleResponseData;
+import com.whiz.app.boot.interfaces.dto.response.ResponseResult;
+import com.whiz.app.boot.interfaces.dto.response.ResultStatusType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
@@ -14,7 +14,7 @@ import java.util.List;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(BindException.class)
-    public ResponseEntity<SimpleResponseData> handleValidationException(BindException be) {
+    public ResponseEntity<ResponseResult<String>> handleValidationException(BindException be) {
         StringBuilder errorMessage = new StringBuilder();
         List<FieldError> fieldErrorList = be.getFieldErrors();
         for (FieldError fieldError : fieldErrorList) {
@@ -25,23 +25,27 @@ public class GlobalExceptionHandler {
                 .append(fieldError.getDefaultMessage())
                 .append(";");
         }
-        return ResponseEntity.ok(SimpleResponseData.failure(ResponseDataType.BAD_REQUEST, errorMessage.toString()));
+        return ResponseEntity.ok(
+            ResponseResult.failure(ResultStatusType.BAD_REQUEST, errorMessage.toString(), errorMessage.toString()));
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<SimpleResponseData> handleInternalError(IllegalArgumentException iae) {
-        return ResponseEntity.ok(SimpleResponseData.failure(ResponseDataType.INTERNAL_ERROR, iae.getMessage()));
+    public ResponseEntity<ResponseResult<String>> handleInternalError(IllegalArgumentException iae) {
+        return ResponseEntity.ok(
+            ResponseResult.failure(ResultStatusType.INTERNAL_SERVER_ERROR, iae.getMessage(), iae.getMessage()));
     }
 
     @ExceptionHandler({
         RemoteDataParsedException.class
     })
-    public ResponseEntity<SimpleResponseData> handleServiceLayerError(CommonBizException e) {
-        return ResponseEntity.ok(SimpleResponseData.failure(ResponseDataType.INTERNAL_ERROR, e.getMessage()));
+    public ResponseEntity<ResponseResult<String>> handleServiceLayerError(CommonBizException cbe) {
+        return ResponseEntity.ok(
+            ResponseResult.failure(ResultStatusType.INTERNAL_SERVER_ERROR, cbe.getMessage(), cbe.getMessage()));
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<SimpleResponseData> handleGeneralError(Exception e) {
-        return ResponseEntity.ok(SimpleResponseData.failure(ResponseDataType.INTERNAL_ERROR, e.getMessage()));
+    public ResponseEntity<ResponseResult<String>> handleGeneralError(Exception e) {
+        return ResponseEntity.ok(
+            ResponseResult.failure(ResultStatusType.INTERNAL_SERVER_ERROR, e.getMessage(), e.getMessage()));
     }
 }

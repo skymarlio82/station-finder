@@ -17,7 +17,7 @@ public class StationFinderApplication {
 
     @Bean
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
-        log.info("====>>>> Application - Startup called :: java.io.tmpdir = {}", System.getProperty("java.io.tmpdir"));
+        log.info("====> Application - Startup called :: java.io.tmpdir = {}", System.getProperty("java.io.tmpdir"));
         return args -> {
 
         };

@@ -9,10 +9,9 @@ import com.whiz.app.boot.interfaces.dto.PagingParamRequest;
 import com.whiz.app.boot.interfaces.dto.UserDetail;
 import com.whiz.app.boot.interfaces.dto.form.NewUserForm;
 import com.whiz.app.boot.interfaces.dto.form.UserUpdatedForm;
-import com.whiz.app.boot.interfaces.dto.response.GenericResponseData;
-import com.whiz.app.boot.interfaces.dto.response.ResponseDataType;
+import com.whiz.app.boot.interfaces.dto.response.ResponseResult;
+import com.whiz.app.boot.interfaces.dto.response.ResultStatusType;
 import com.whiz.app.boot.interfaces.dto.response.SimplePageData;
-import com.whiz.app.boot.interfaces.dto.response.SimpleResponseData;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -50,45 +49,46 @@ public class UserController {
 
     @ApiOperation(value = "Get Profile Details of Current User", nickname = "GetActualUser")
     @GetMapping("/me")
-    public ResponseEntity<UserDetail> getActualUser() {
+    public ResponseEntity<ResponseResult<UserDetail>> getActualUser() {
         UserProfile userProfile = userService.getUserProfileWithAuthorities();
-        return ResponseEntity.ok(UserDetail.from(userProfile));
+        return ResponseEntity.ok(ResponseResult.success(UserDetail.from(userProfile)));
     }
 
     @ApiOperation(value = "Get All Users in System", nickname = "GetAllUsers")
     @GetMapping("/all")
-    public ResponseEntity<GenericResponseData<SimplePageData<UserProfile>>> getAllUsers(
+    public ResponseEntity<ResponseResult<SimplePageData<UserProfile>>> getAllUsers(
         @Valid PagingParamRequest pagingParamRequest) {
         Page<UserProfile> userProfilePage = userProfileService.getAllUsers(pagingParamRequest);
-        return ResponseEntity.ok(GenericResponseData.ok(SimplePageData.of(userProfilePage)));
+        return ResponseEntity.ok(ResponseResult.success(SimplePageData.of(userProfilePage)));
     }
 
     @ApiOperation(value = "Get Specified User Profile Details by Id", nickname = "GetUserById")
     @GetMapping("/id/{id}")
-    public ResponseEntity<UserDetail> getUserById(@ApiParam(value = "userId") @PathVariable Long id) {
+    public ResponseEntity<ResponseResult<UserDetail>> getUserById(@ApiParam(value = "userId") @PathVariable Long id) {
         UserProfile userProfile = userProfileService.getUserProfileById(id);
-        return ResponseEntity.ok(UserDetail.from(userProfile));
+        return ResponseEntity.ok(ResponseResult.success(UserDetail.from(userProfile)));
     }
 
     @ApiOperation(value = "Create New User Entity", nickname = "NewUser")
     @PostMapping("/users")
-    public ResponseEntity<GenericResponseData<UserDetail>> createNewUser(@RequestBody @Valid NewUserForm newUserForm) {
+    public ResponseEntity<ResponseResult<UserDetail>> createNewUser(@RequestBody @Valid NewUserForm newUserForm) {
         log.debug("newUserForm = {}", newUserForm);
         List<Authority> authorities = userProfileService.getAuthorityListByNames(newUserForm.getAuthorities());
         UserProfile userProfile = userProfileService.saveNewUser(UserProfile.from(newUserForm, authorities));
-        return ResponseEntity.ok(GenericResponseData.ok(UserDetail.from(userProfile)));
+        return ResponseEntity.ok(ResponseResult.success(UserDetail.from(userProfile)));
     }
 
     @ApiOperation(value = "Update Exist User Entity", nickname = "UpdateUser")
     @PutMapping("/users")
-    public ResponseEntity<SimpleResponseData> updateUser(@RequestBody @Valid UserUpdatedForm userUpdatedForm) {
+    public ResponseEntity<ResponseResult<String>> updateUser(@RequestBody @Valid UserUpdatedForm userUpdatedForm) {
         log.debug("userUpdatedForm = {}", userUpdatedForm);
         UserProfile user = userProfileService.getUserProfileById(userUpdatedForm.getId());
         if (null != user) {
             List<Authority> authorities = userProfileService.getAuthorityListByNames(userUpdatedForm.getAuthorities());
             userUpdateEventPublisher.doPublishEvent(user.sync(userUpdatedForm, authorities));
-            return ResponseEntity.ok(SimpleResponseData.success());
+            return ResponseEntity.ok(ResponseResult.success("Success"));
         }
-        return ResponseEntity.ok(SimpleResponseData.failure(ResponseDataType.BAD_REQUEST, "User not existed"));
+        return ResponseEntity.ok(
+            ResponseResult.failure(ResultStatusType.BAD_REQUEST, "User not existed", "User not existed"));
     }
 }

@@ -3,6 +3,7 @@ package com.whiz.app.boot.application.controller;
 import com.whiz.app.boot.domain.model.UserProfile;
 import com.whiz.app.boot.domain.repository.UserProfileRepository;
 import com.whiz.app.boot.interfaces.UserTest;
+import com.whiz.app.boot.interfaces.dto.response.ResponseResult;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,9 +25,10 @@ public class TestController {
     }
 
     @GetMapping("/getAllUsers")
-    public ResponseEntity<List<UserTest>> getAllUsers() {
+    public ResponseEntity<ResponseResult<List<UserTest>>> getAllUsers() {
         List<UserProfile> userProfiles = userProfileRepository.findAll();
-        return ResponseEntity.ok(userProfiles.stream().map(UserTest::from).collect(Collectors.toList()));
+        return ResponseEntity.ok(
+            ResponseResult.success(userProfiles.stream().map(UserTest::from).collect(Collectors.toList())));
     }
 
     private static final Map<String, Object> chartData = new HashMap<>();
@@ -54,8 +56,8 @@ public class TestController {
     }
 
     @GetMapping("/chartData")
-    public ResponseEntity<Map<String, Object>> getChartData() {
-        return ResponseEntity.ok(chartData);
+    public ResponseEntity<ResponseResult<Map<String, Object>>> getChartData() {
+        return ResponseEntity.ok(ResponseResult.success(chartData));
     }
 
     private static final Map<String, Object> chartData1 = new HashMap<>();
@@ -77,7 +79,7 @@ public class TestController {
     }
 
     @GetMapping("/chartData1")
-    public ResponseEntity<Map<String, Object>> getChartData1() {
-        return ResponseEntity.ok(chartData1);
+    public ResponseEntity<ResponseResult<Map<String, Object>>> getChartData1() {
+        return ResponseEntity.ok(ResponseResult.success(chartData1));
     }
 }

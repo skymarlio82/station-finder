@@ -43,7 +43,7 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Override
     public UserProfile saveNewUser(UserProfile newUser) {
         UserProfile user = userProfileRepository.saveAndFlush(newUser);
-        log.debug("====>>>> just saved user : {}", user);
+        log.debug("====> just saved user : {}", user);
         return user;
     }
 
@@ -57,7 +57,7 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Override
     public Authority saveNewAuthority(Authority newAuthority) {
         Authority authority = authorityRepository.saveAndFlush(newAuthority);
-        log.debug("====>>>> just saved authority : {}", authority);
+        log.debug("====> just saved authority : {}", authority);
         return authority;
     }
 

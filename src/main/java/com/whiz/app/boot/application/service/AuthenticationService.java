@@ -87,8 +87,8 @@ public class AuthenticationService {
         userInfo.setAccessToken(accessTokenDto.getAccessToken());
         HttpSession session = request.getSession();
         session.setAttribute("USER_CONFIG", userInfo);
-        response.setHeader("Location", request.getContextPath() + "/info?jwt=" + jwt);
-//        response.setHeader("Location", "http://localhost:8090/#/oauth2Token?jwt=" + jwt);
+//        response.setHeader("Location", request.getContextPath() + "/info?jwt=" + jwt);
+        response.setHeader("Location", "http://localhost:8090/#/oauth2Token?jwt=" + jwt);
         response.setStatus(302);
     }
 }

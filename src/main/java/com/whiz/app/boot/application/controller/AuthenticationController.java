@@ -5,6 +5,7 @@ import com.whiz.app.boot.infrastructure.security.JwtFilter;
 import com.whiz.app.boot.infrastructure.security.TokenProvider;
 import com.whiz.app.boot.interfaces.dto.JwtToken;
 import com.whiz.app.boot.interfaces.dto.form.LoginForm;
+import com.whiz.app.boot.interfaces.dto.response.ResponseResult;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -62,7 +63,7 @@ public class AuthenticationController {
 
     @ApiOperation(value = "Login to Authenticate the User", nickname = "LoginUser")
     @PostMapping("/login/native")
-    public ResponseEntity<JwtToken> loginUser(@Valid @RequestBody LoginForm loginForm) {
+    public ResponseEntity<ResponseResult<JwtToken>> loginUser(@Valid @RequestBody LoginForm loginForm) {
         UsernamePasswordAuthenticationToken upat = new UsernamePasswordAuthenticationToken(
             loginForm.getUsername(), loginForm.getPassword());
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(upat);
@@ -71,6 +72,6 @@ public class AuthenticationController {
         String jwt = tokenProvider.createToken(authentication, rememberMe);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
-        return new ResponseEntity<>(new JwtToken(jwt), httpHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(ResponseResult.success(new JwtToken(jwt)), httpHeaders, HttpStatus.OK);
     }
 }
